@@ -1,0 +1,6 @@
+.cpcache
+build
+resources/public/js
+app.log
+.nrepl-port
+figwheel_server.log

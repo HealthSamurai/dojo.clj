@@ -1,0 +1,14 @@
+jars
+.cpcache
+pgdata
+.DS_Store
+ui/build.dev
+ui/build
+ui/build.prod
+ui/target
+target
+pom.xml
+.nrepl-port
+data
+mappings/node_modules
+mappings/.nyc_output

@@ -1,0 +1,35 @@
+{:paths ["src"]
+ :deps {org.clojure/clojure            {:mvn/version "1.10.0"}
+        clj-commons/clj-yaml           {:mvn/version "0.7.0"}
+        com.sun.xml.bind/jaxb-core     {:mvn/version "2.3.0.1"}
+        com.sun.xml.bind/jaxb-impl     {:mvn/version "2.3.2"}
+        healthsamurai/matcho           {:mvn/version "0.3.3"}
+        honeysql                       {:mvn/version "0.9.4"}
+        com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
+        http-kit                       {:mvn/version "2.4.0-alpha3"}
+        route-map                      {:mvn/version "0.0.7-RC4"}
+        ring                           {:mvn/version "1.7.1"}
+        ring/ring-defaults             {:mvn/version "0.3.2"}}
+ :aliases
+ {:nrepl
+  {:extra-paths ["dev" "ui/build.dev" "test"]
+   :extra-deps {spyscope                      {:mvn/version "0.1.6"}
+                org.clojure/clojure           {:mvn/version "1.10.0"}
+                org.clojure/tools.nrepl       {:mvn/version "0.2.13"}
+                cider/cider-nrepl             {:mvn/version "0.20.0"}
+                refactor-nrepl/refactor-nrepl {:mvn/version "2.4.0"}}
+   :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow"]}
+
+  :test {:extra-paths ["test"]}
+
+  :runner {:extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
+                                                   :sha     "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
+           :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow" ]
+           :main-opts ["-m" "test-runner"]}
+
+  :build
+  {:extra-paths ["build" "ui/build.prod"]
+   :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow"]
+   :extra-deps {cambada {:git/url "https://github.com/HealthSamurai/cambada"
+                         :sha     "e44a0bebd039285f3e10f15f5703d6eaf92672c7"}}
+   :main-opts  ["-m" "build"]}}}

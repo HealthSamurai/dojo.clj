@@ -1,0 +1,50 @@
+#
+#  Cluster
+#
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dojo
+  namespace: dojo
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: dojo 
+  type: NodePort
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dojo
+  namespace: dojo
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dojo
+    spec:
+      containers:
+      - name: cluster
+        image: "{{IMG}}"
+        imagePullPolicy: Always
+        env:
+        - name: DATE
+          value: '{{DATE}}'
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /__healthcheck
+            port: 8080
+          initialDelaySeconds: 20
+          timeoutSeconds: 10
+          periodSeconds: 10
+          failureThreshold: 30
