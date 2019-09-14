@@ -1,15 +1,26 @@
 {:paths ["src"]
  :deps {org.clojure/clojure            {:mvn/version "1.10.0"}
         clj-commons/clj-yaml           {:mvn/version "0.7.0"}
+        cheshire                       {:mvn/version "5.8.1"}
         com.sun.xml.bind/jaxb-core     {:mvn/version "2.3.0.1"}
         com.sun.xml.bind/jaxb-impl     {:mvn/version "2.3.2"}
         healthsamurai/matcho           {:mvn/version "0.3.3"}
-        honeysql                       {:mvn/version "0.9.4"}
-        com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
         http-kit                       {:mvn/version "2.4.0-alpha3"}
         route-map                      {:mvn/version "0.0.7-RC4"}
         ring                           {:mvn/version "1.7.1"}
-        ring/ring-defaults             {:mvn/version "0.3.2"}}
+        ring/ring-defaults             {:mvn/version "0.3.2"}
+
+        ;; db deps
+        ;; org.clojure/java.jdbc          {:mvn/version "0.7.9"}
+        ;; com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
+        ;; org.postgresql/postgresql      {:mvn/version "42.2.5.jre7"}
+        ;; com.github.cretz.pgnio/pgnio-driver {:mvn/version "0.2.0"}
+        honeysql                       {:mvn/version "0.9.4"}
+        funcool/promesa {:mvn/version "3.0.0"}
+
+        zprint {:mvn/version "0.4.16"}
+
+        }
  :aliases
  {:nrepl
   {:extra-paths ["dev" "ui/build.dev" "test"]
