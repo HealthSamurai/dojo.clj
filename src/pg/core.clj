@@ -143,8 +143,8 @@
     (loop [x (int cols-num) res []]
       (if (> x 0)
         (let [len     (.getInt b)
-              col (when (> len 0) (byte-array len))
-              _ (.get b col)]
+              col (when (> len 0) (let [c (byte-array len)]
+                                    (.get b c) c))]
           (recur (dec x)
                  (if col
                    (conj res col)
@@ -381,13 +381,25 @@
 
   (.isOpen conn)
 
-  (def r (buf 10000000))
+  (def r (buf 1000))
 
   (.clear r)
 
-  (query conn r "Select 1")
+  (doseq [x (range 100)]
+    (println ">> " x)
+    (query conn r "Select 1")
 
-  (query conn r "Select ups")
+    (query conn r "Select ups"))
+
+  (query conn r "Select * from information_schema.tables")
+
+  (query conn r "Select * from generate_series(0,10000) i, information_schema.tables")
+
+  r
+
+  (.clear r)
+
+  (parse-msg r)
 
   )
 
