@@ -1,3 +1,5 @@
+SHELL = bash
+
 repl:
 	source ../.env && clj -A:dev -R:dev -e "(repl)" -r
 

@@ -1,6 +1,8 @@
 .EXPORT_ALL_VARIABLES:
 .PHONY: test deploy
 
+SHELL = bash
+
 VERSION = $(shell cat VERSION)
 DATE = $(shell date)
 
