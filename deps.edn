@@ -54,4 +54,13 @@
                                 spieden/spyscope            {:mvn/version "0.1.7"}
                                 com.bhauman/spell-spec      {:mvn/version "0.1.1"}
                                 org.clojure/core.rrb-vector {:mvn/version "0.0.14"}}
-                :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}}}
+                :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}
+
+  ;; for IDEA users
+  :repl     {:extra-deps  {criterium                  {:mvn/version "0.4.5"}
+                           cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                           nrepl                      {:mvn/version "0.6.0"}
+                           com.cognitect/transcriptor {:mvn/version "0.1.5"}
+                           com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
+             :extra-paths ["src" "dev" "ui/dev" "test" "build"]
+             :main-opts   ["--main" "nrepl.cmdline" #_"--port" #_"7888"]}}}
