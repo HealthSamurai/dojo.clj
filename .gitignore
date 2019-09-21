@@ -12,3 +12,4 @@ pom.xml
 data
 mappings/node_modules
 mappings/.nyc_output
+.idea
