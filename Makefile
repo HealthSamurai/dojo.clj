@@ -6,18 +6,18 @@ SHELL = bash
 VERSION = $(shell cat VERSION)
 DATE = $(shell date)
 
-IMG = niquola/dojo
+include .env
 
 repl:
-	source .env && clj -A:test:nrepl -R:test:nrepl -e "(-main)" -r
+	clj -A:test:nrepl -R:test:nrepl -e "(-main)" -r
 
 up:
-	source .env && docker-compose up -d
+	docker-compose up -d
 stop:
-	source .env && docker-compose stop
+	docker-compose stop
 
 down:
-	source .env && docker-compose down
+	docker-compose down
 
 jar:
 	cd ui && make prod && cd .. && rm -rf target && clj -A:build
@@ -29,11 +29,11 @@ pub:
 	docker push ${IMG}
 
 deploy:
-	cd deploy && cat srv.tpl.yaml | ./envtpl.mac 
+	cd deploy && cat srv.tpl.yaml | ./envtpl.mac | kubectl apply -f -
 
 all: jar docker pub deploy
 	echo "Done"
 
 test:
-	source .env && clj -A:test:runner
+	clj -A:test:runner
 

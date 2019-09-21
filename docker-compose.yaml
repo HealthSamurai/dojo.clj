@@ -11,3 +11,11 @@ services:
       POSTGRES_USER:     "${PGUSER}" 
       POSTGRES_PASSWORD: "${PGPASSWORD}" 
       POSTGRES_DB:       "${PGDATABASE}"
+  dojo:
+
+    image: "${IMG}"
+    ports:
+      - 8080:8887
+    depends_on:
+      - dojo-db
+
