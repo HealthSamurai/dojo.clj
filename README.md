@@ -9,3 +9,17 @@
 * ui: reagent, re-frame
 * tests: back and ui
 * deploy: jar, kubernetes
+
+
+## Start
+
+```sh
+make up
+make repl
+# connect from ide
+
+
+make build
+make deploy
+
+```

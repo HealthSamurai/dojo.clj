@@ -11,9 +11,9 @@
         ring/ring-defaults             {:mvn/version "0.3.2"}
 
         ;; db deps
-        ;; org.clojure/java.jdbc          {:mvn/version "0.7.9"}
-        ;; com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
-        ;; org.postgresql/postgresql      {:mvn/version "42.2.5.jre7"}
+        org.clojure/java.jdbc          {:mvn/version "0.7.9"}
+        com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
+        org.postgresql/postgresql      {:mvn/version "42.2.5.jre7"}
         ;; com.github.cretz.pgnio/pgnio-driver {:mvn/version "0.2.0"}
         honeysql                       {:mvn/version "0.9.4"}
         funcool/promesa {:mvn/version "3.0.0"}
