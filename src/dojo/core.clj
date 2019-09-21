@@ -15,7 +15,7 @@
     ctx))
 
 (defn -main [& args]
-  (start))
+  (start {}))
 
 (comment
   (def ctx (start {}))
