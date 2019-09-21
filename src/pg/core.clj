@@ -340,8 +340,8 @@
 
 (def parsers
   { \T parse-row-desc
-    \D parse-data
-    \Z parse-ready-for-query
+   \D parse-data
+   \Z parse-ready-for-query
    \Q parse-query
    \C parse-close
    \E parse-error
@@ -381,9 +381,12 @@
 
   (.isOpen conn)
 
-  (def r (buf 1000))
+  (def r (buf 100000))
 
   (.clear r)
+
+  (query conn r "select 1; select 'a', 'b'")
+
 
   (doseq [x (range 100)]
     (println ">> " x)
