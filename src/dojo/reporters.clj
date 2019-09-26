@@ -14,10 +14,7 @@
     (cond
       (= :sql (:type opts))
       (println "SQL:" (sql-report ctx (assoc opts :id k)))
-      :else (println "Unknown reporter" opts))
-
-
-    ))
+      :else (println "Unknown reporter" opts))))
 
 (defn *start [ctx]
   (loop []
@@ -28,7 +25,6 @@
 (defn start [ctx]
   (let [db (db.core/datasource (get-in ctx [:config :db]))
         ctx (assoc ctx :db db)
-        
         th (Thread. (fn [] (*start ctx))) ]
     (.setName th "reporters")
     (.start th)
