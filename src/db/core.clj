@@ -76,7 +76,7 @@
           start (System/currentTimeMillis)]
       (try
         (let [res (jdbc/query db sql)]
-          (println :query sql)
+          ;; (println :query sql)
           res)
         (catch Exception e
           (println :query sql)
