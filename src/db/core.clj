@@ -8,7 +8,12 @@
    [ring.util.codec]
    [clojure.walk]
    [clojure.string :as str]
-   [clojure.java.jdbc :as jdbc]))
+   [clojure.java.jdbc :as jdbc])
+
+  (:import org.postgresql.copy.CopyManager
+           java.nio.charset.StandardCharsets
+           java.sql.Connection))
+
 
 (defn env [v]
   (-> v (name)
@@ -196,7 +201,7 @@
                  (query db))]
     (if (vector? data) res (first res))))
 
-(defn update [db {tbl :table pk :pk :as spec} data]
+(defn do-update [db {tbl :table pk :pk :as spec} data]
   (let [pk (or pk :id)]
     (->> {:update tbl
           :set (coerce-entry db spec (dissoc data :id))
@@ -250,5 +255,50 @@
 
 (def raw honeysql.core/raw)
 
+
+(defn- copy-stream [msgs]
+  (let [len (dec (count msgs))
+        idx (atom -1)]
+    (proxy [java.io.InputStream] []
+      (read
+        ([] (assert false "Unexpected"))
+        ([^bytes bs off len] (assert false "Unexpected"))
+        ([^bytes bs]
+         (if-let [msg (when (< @idx len) (nth msgs (swap! idx inc)))]
+           (let [data (.getBytes msg)
+                 len (alength data)
+                 buf-len (alength bs)]
+             (if (> buf-len len)
+               (System/arraycopy data 0 bs 0 len)
+               (assert false "Unexpected"))
+             len)
+           -1))))))
+
+(defn to-line [cols msg]
+  (str (str/join "\t" (mapv msg cols)) "\n"))
+
+(defn mk-copy [db batch-size tbl cols]
+  (let [st (atom {:cnt 0 :msgs []})]
+    (fn [msg]
+      (let [state @st
+            msgtxt (to-line cols msg)]
+        (if (>= (:cnt state) batch-size)
+          (let [strm (copy-stream (:msgs state))]
+            (println "Load" batch-size)
+            (with-connection db
+              (fn [conn]
+                (let [pg-conn  (.unwrap ^java.sql.Connection conn org.postgresql.PGConnection)
+                      cm       (org.postgresql.copy.CopyManager. pg-conn)
+                      copy-sql (format "COPY %s (%s) FROM STDIN delimiter e'\\t'"
+                                       (name tbl)
+                                       (->> cols (mapv name) (str/join ",")))
+                      cnt (time (.copyIn cm copy-sql strm))]
+                  cnt)))
+            (swap! st assoc :cnt 1 :msgs [msgtxt]))
+          (swap! st (fn [s] (-> s
+                                (clojure.core/update :cnt inc)
+                                (clojure.core/update :msgs conj msgtxt)))))))))
+
 (comment
+
   )

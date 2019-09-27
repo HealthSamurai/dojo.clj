@@ -2,10 +2,14 @@
   (:require [dojo.watchers.rest :as sut]
             [tsys]
             [db.core :as dbc]
-            [clojure.test :refer :all]))
+            [clojure.test :refer :all]
+            [clojure.string :as str]))
+
 
 (deftest rest-watcher
   (def db (tsys/ensure-db))
+
+
 
   (dbc/exec! db "
 create extension if not exists pipelinedb;
@@ -50,19 +54,23 @@ GROUP BY
 
 ")
 
+  (dbc/with-connection db (fn [conn]
+                            (println conn)
+                            ))
 
   (time
-   (doseq [i (range 100)]
+   (doseq [i (range 1000)]
      (doseq [d ["2019-09-25T16:40:54+00:00"
-                "2019-09-26T16:40:54+00:00"
-                "2019-09-27T16:40:54+00:00"]]
+                ;;"2019-09-26T16:40:54+00:00"
+                ;;"2019-09-27T16:40:54+00:00"
+                ]]
        (dbc/insert
         db {:table :rest_requests}
         {:ts d
          :meth "post"
          :uri "/Encounter"
          :d i})
-       (dbc/insert
+       #_(dbc/insert
         db {:table :rest_requests}
         {:ts d
          :meth "get"
@@ -72,6 +80,13 @@ GROUP BY
   (dbc/query db "select * from rest_stats")
 
   (time (dbc/query db "select * from rest_daily_cnt"))
+
+
+  (let [add-item (dbc/mk-copy db 1000 :rest_requests [:ts :meth :uri :qs :d])]
+    (time
+     (doseq [i (range 10000)]
+       (add-item {:ts "2019-09-25T16:40:54+00:00" :meth "post" :uri "/Encounter" :d i}))))
+  
 
 
   )
