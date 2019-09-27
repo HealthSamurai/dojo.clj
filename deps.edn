@@ -1,71 +1,75 @@
 {:paths ["src"]
- :deps {org.clojure/clojure            {:mvn/version "1.10.1"}
-        clj-commons/clj-yaml           {:mvn/version "0.7.0"}
-        cheshire                       {:mvn/version "5.8.1"}
-        com.sun.xml.bind/jaxb-core     {:mvn/version "2.3.0.1"}
-        com.sun.xml.bind/jaxb-impl     {:mvn/version "2.3.2"}
-        healthsamurai/matcho           {:mvn/version "0.3.3"}
-        http-kit                       {:mvn/version "2.4.0-alpha3"}
-        route-map                      {:mvn/version "0.0.7-RC4"}
-        ring                           {:mvn/version "1.7.1"}
-        ring/ring-defaults             {:mvn/version "0.3.2"}
+ :deps  {org.clojure/clojure         {:mvn/version "1.10.1"}
+         clj-commons/clj-yaml        {:mvn/version "0.7.0"}
+         cheshire                    {:mvn/version "5.8.1"}
+         com.sun.xml.bind/jaxb-core  {:mvn/version "2.3.0.1"}
+         com.sun.xml.bind/jaxb-impl  {:mvn/version "2.3.2"}
+         healthsamurai/matcho        {:mvn/version "0.3.3"}
+         http-kit                    {:mvn/version "2.4.0-alpha3"}
+         route-map                   {:mvn/version "0.0.7-RC4"}
+         ring                        {:mvn/version "1.7.1"}
+         ring/ring-defaults          {:mvn/version "0.3.2"}
 
-        ;; telegram bot
-        morse                          {:mvn/version "0.4.3"}
-        org.clojure/tools.logging {:mvn/version "0.5.0"}
-        org.slf4j/slf4j-simple {:mvn/version "1.7.28"}
+         ;; telegram bot
+         morse                       {:mvn/version "0.4.3"}
+         org.clojure/tools.logging   {:mvn/version "0.5.0"}
+         org.slf4j/slf4j-simple      {:mvn/version "1.7.28"}
 
-        ;; db deps
-        org.clojure/java.jdbc          {:mvn/version "0.7.9"}
-        com.zaxxer/HikariCP            {:mvn/version "3.3.1"}
-        org.postgresql/postgresql      {:mvn/version "42.2.5.jre7"}
-        ;; com.github.cretz.pgnio/pgnio-driver {:mvn/version "0.2.0"}
-        honeysql                       {:mvn/version "0.9.4"}
-        funcool/promesa {:mvn/version "3.0.0"}
+         ;; db deps
+         org.clojure/java.jdbc       {:mvn/version "0.7.9"}
+         com.zaxxer/HikariCP         {:mvn/version "3.3.1"}
+         org.postgresql/postgresql   {:mvn/version "42.2.5.jre7"}
+         ;; com.github.cretz.pgnio/pgnio-driver {:mvn/version "0.2.0"}
+         honeysql                    {:mvn/version "0.9.4"}
+         funcool/promesa             {:mvn/version "3.0.0"}
 
-        zprint {:mvn/version "0.4.16"}
+         zprint                      {:mvn/version "0.4.16"}
 
-        ;; support for java 11+
-        org.clojure/core.rrb-vector               {:mvn/version "0.0.14"}
+         ;; support for java 11+
+         org.clojure/core.rrb-vector {:mvn/version "0.0.14"}
 
-        }
+         ;; distributed primitives
+         io.atomix/atomix            {:mvn/version "3.0.6"}
+         io.atomix/atomix-raft       {:mvn/version "3.0.6"}
+
+         }
  :aliases
- {:nrepl
-  {:extra-paths ["dev" "ui/build.dev" "test"]
-   :extra-deps {spieden/spyscope              {:mvn/version "0.1.7"} ;; newer version without bugs (fork)
-                org.clojure/clojure           {:mvn/version "1.10.0"}
-                org.clojure/tools.nrepl       {:mvn/version "0.2.13"}
-                cider/cider-nrepl             {:mvn/version "0.20.0"}
-                refactor-nrepl/refactor-nrepl {:mvn/version "2.4.0"}}
-   :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow"]}
+        {:nrepl
+                      {:extra-paths ["dev" "ui/build.dev" "test"]
+                       :extra-deps  {spieden/spyscope              {:mvn/version "0.1.7"} ;; newer version without bugs (fork)
+                                     org.clojure/clojure           {:mvn/version "1.10.0"}
+                                     org.clojure/tools.nrepl       {:mvn/version "0.2.13"}
+                                     cider/cider-nrepl             {:mvn/version "0.20.0"}
+                                     refactor-nrepl/refactor-nrepl {:mvn/version "2.4.0"}}
+                       :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]}
 
-  :test {:extra-paths ["test"]}
+         :test        {:extra-paths ["test"]}
 
-  :runner {:extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
-                                                   :sha     "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
-           :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow" ]
-           :main-opts ["-m" "test-runner"]}
+         :runner      {:extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
+                                                               :sha     "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
+                       :jvm-opts   ^:replace ["-XX:-OmitStackTraceInFastThrow"]
+                       :main-opts  ["-m" "test-runner"]}
 
-  :build
-  {:extra-paths ["build" "ui/build.prod"]
-   :jvm-opts ^:replace ["-XX:-OmitStackTraceInFastThrow"]
-   :extra-deps {cambada {:git/url "https://github.com/HealthSamurai/cambada"
-                         :sha     "e44a0bebd039285f3e10f15f5703d6eaf92672c7"}}
-   :main-opts  ["-m" "build"]}
+         :build
+                      {:extra-paths ["build" "ui/build.prod"]
+                       :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]
+                       :extra-deps  {cambada {:git/url "https://github.com/HealthSamurai/cambada"
+                                              :sha     "e44a0bebd039285f3e10f15f5703d6eaf92672c7"}}
+                       :main-opts   ["-m" "build"]}
 
-  :debug-tools {:extra-deps    {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
-                                org.clojure/tools.trace     {:mvn/version "0.7.9"}
-                                philoskim/debux             {:mvn/version "0.5.6"}
-                                spieden/spyscope            {:mvn/version "0.1.7"}
-                                com.bhauman/spell-spec      {:mvn/version "0.1.1"}
-                                org.clojure/core.rrb-vector {:mvn/version "0.0.14"}}
-                :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}
+         :debug-tools {:extra-deps    {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
+                                       org.clojure/tools.trace     {:mvn/version "0.7.9"}
+                                       philoskim/debux             {:mvn/version "0.5.6"}
+                                       spieden/spyscope            {:mvn/version "0.1.7"}
+                                       com.bhauman/spell-spec      {:mvn/version "0.1.1"}
+                                       org.clojure/core.rrb-vector {:mvn/version "0.0.14"}}
+                       :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}
 
-  ;; for IDEA users
-  :repl     {:extra-deps  {criterium                  {:mvn/version "0.4.5"}
-                           cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
-                           nrepl                      {:mvn/version "0.6.0"}
-                           com.cognitect/transcriptor {:mvn/version "0.1.5"}
-                           com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
-             :extra-paths ["src" "dev" "ui/dev" "test" "build"]
-             :main-opts   ["--main" "nrepl.cmdline" #_"--port" #_"7888"]}}}
+         ;; for IDEA users
+         :repl        {:extra-deps  {criterium                  {:mvn/version "0.4.5"}
+                                     cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                     nrepl                      {:mvn/version "0.6.0"}
+                                     com.cognitect/transcriptor {:mvn/version "0.1.5"}
+                                     com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
+                       :extra-paths ["src" "dev" "ui/dev" "test" "build"]
+                       :main-opts   ["--main" "nrepl.cmdline" #_"--port" #_"7888"]}}}
