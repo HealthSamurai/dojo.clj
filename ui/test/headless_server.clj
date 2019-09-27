@@ -1,5 +1,5 @@
 (ns headless-server
-  (:require [myapp.core :as server]
+  (:require [dojo.core]
             [cheshire.core :as json]
             [re-frame.core :as rf]
             [re-frame.interop]
@@ -13,7 +13,18 @@
 (defn reset-db []
   (reset! re-frame.db/app-db {}))
 
-(defn dispatch [req])
+
+(defonce *server (atom nil))
+
+(defn ensure-server []
+  (when-not @*server
+    (reset! *server (dojo.core/start {:db (dojo.core/db-from-env)}))))
+
+(defn dispatch [req]
+  (ensure-server)
+  (let [{disp :dispatch} @*server]
+    (disp req)))
+
 (defn json-fetch [{:keys [uri token headers is-fetching-path params success error] :as opts}]
   (if (vector? opts)
     (doseq [o opts] (json-fetch o))
@@ -48,11 +59,8 @@
 (rf/reg-fx :zframes.redirect/redirect
            (fn [opts] (swap! browser assoc :location opts)))
 
-(defn ensure-server []
-  (libox.test/ensure-box myapp.core/app))
 
 (comment
   (ensure-server)
-  (libox.test/stop)
 
   )

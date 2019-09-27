@@ -51,8 +51,11 @@
 (defn dispatch [ctx req]
   ((:dispatch @ctx) req))
 
+(defn db-from-env []
+  (db.core/db-spec-from-env))
+
 (defn -main [& args]
-  (start {:db (db.core/db-spec-from-env)
+  (start {:db (db-from-env) 
           :web {}}))
 
 (comment

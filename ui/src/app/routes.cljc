@@ -5,7 +5,8 @@
 
 (def routes {:. :welcome/index
              "rest" {:. :rest/index}
-             "db"   {:. :db/index}})
+             "db"   {:. :db/index}
+             "events" {:. :events/index}})
 
 
 (defn to-query-params [params]

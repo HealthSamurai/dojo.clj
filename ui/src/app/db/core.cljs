@@ -28,9 +28,6 @@
                (into
                 [:tr {:key (:table_name r)}]
                 (for [c cols]
-                  [:td {:key c} (pr-str (get r c))]))
-
-               )])]
-         ]))))
+                  [:td {:key c} (pr-str (get r c))])))])]]))))
 
 (pages/reg-page model/page-key index)

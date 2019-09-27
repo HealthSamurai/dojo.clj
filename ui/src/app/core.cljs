@@ -14,9 +14,8 @@
             [app.welcome.core]
             [app.db.core]
             [app.rest.core]
+            [app.events.core]
             [garden.core :as garden]))
-
-
 
 (defn style [css]
   [:style (garden/css css)])

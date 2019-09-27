@@ -1,7 +1,7 @@
 (ns user
   (:require [clojure.java.shell :as shell]
             [cider-nrepl.main]
-            [figwheel-sidecar.repl-api :as repl]
+            [figwheel.main.api]
             [build]
             [clojure.string :as str]))
 
@@ -13,37 +13,26 @@
 
 (def dev-output-dir "build.dev/public")
 
-(defn dev-build [opts]
-  (merge-with
-   merge
-   {:source-paths ["src"]
-    :compiler
-    {:pretty-print  true
-     :source-map true
-     :asset-path "js"
-     :output-dir (str dev-output-dir "/js")
-     :optimizations :none}}
-   opts))
-
-
-(def figwheel-options
-  {:figwheel-options {:builds-to-start ["app"]}
-   :all-builds
-   [(dev-build
-     {:id "app"
-      :compiler
-      {:main "app.dev"
-       :output-to (str dev-output-dir "/app.js")}})]})
-
 (defn figwheel []
   (build/link-files dev-output-dir)
-  (repl/start-figwheel! figwheel-options)
+  (figwheel.main.api/start
+   {:id "app"
+    :options {:main 'app.dev
+              :pretty-print  true
+              :source-map true
+              :asset-path "js"
+              :output-to (str dev-output-dir "/app.js")
+              :output-dir (str dev-output-dir "/js")
+              :optimizations :none}
+    :config {:mode :serve
+             :open-url false
+             :watch-dirs ["src"]}})
 
   (build/shell "rm -f build")
   (build/shell "ln -s build.dev build"))
 
 (defn cljs-repl []
-  (repl/cljs-repl))
+  (figwheel.main.api/cljs-repl "app"))
 
 
 (comment

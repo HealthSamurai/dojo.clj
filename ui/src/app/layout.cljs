@@ -3,14 +3,14 @@
             [app.styles]
             [app.routes :refer [href]]))
 
-
 (rf/reg-sub
  ::navigation
  (fn [db _]
    {:title "INC"
     :menu [{:href (href "") :display "Home"}
            {:href (href "rest") :display "REST"}
-           {:href (href "db") :display "DB"}]}))
+           {:href (href "db") :display "DB"}
+           {:href (href "events") :display "Events"}]}))
 
 (def style (app.styles/styles
             [:nav

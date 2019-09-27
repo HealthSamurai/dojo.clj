@@ -20,8 +20,16 @@
       (let [*m @m]
         [:div#welcome.centered-content
          styles
-         (for [b (:blocks *m)]
-           [:div.card {:key (:id b)}
-            [:h3 (:title b)]])]))))
+         [:div 
+          (for [b (:blocks *m)]
+            [:div.card {:key (:id b)}
+             [:h3 (:title b)]])]]))))
 
 (pages/reg-page :welcome/index index)
+
+(comment
+  (js/alert "Hello")
+  (.. js/window -location -href)
+
+
+  )

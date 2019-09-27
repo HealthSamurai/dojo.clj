@@ -3,6 +3,7 @@
             [clojure.java.shell :as shell]
             [clojure.string :as str]))
 
+
 (def prod-out-dir "build.prod/public")
 (def prod-opts {:output-dir    "target/out"
                 :aot-cache true
@@ -50,5 +51,4 @@
   (System/exit 0))
 
 (comment
-  (build)
-  )
+  (build))
