@@ -14,3 +14,4 @@ mappings/node_modules
 mappings/.nyc_output
 .idea
 *.iml
+atomix*

@@ -2,12 +2,12 @@
  :storage/type   :mmap-file
  :storage/folder "atomix-data3"
 
+ :node/id        "node-3"
  :node/type      :active
  :node/address   {:host "localhost" :port 5002}
 
- :cluster/nodes [{:host "localhost" :port 5000}
-                 {:host "localhost" :port 5001}
-                 {:host "localhost" :port 5002}]
-
+ :cluster/nodes  [{:host "localhost" :port 5000}
+                  {:host "localhost" :port 5001}
+                  {:host "localhost" :port 5002}]
 
  }
