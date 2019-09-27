@@ -15,12 +15,23 @@ metadata:
   namespace: dojo
 spec:
   ports:
-  - port: 80
+  - port: 8080
     protocol: TCP
     targetPort: 8887
   selector:
     app: dojo
   type: NodePort
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dojo
+  namespace: dojo
+spec:
+  backend:
+    serviceName: dojo
+    servicePort: 8080
 
 ---
 apiVersion: extensions/v1beta1

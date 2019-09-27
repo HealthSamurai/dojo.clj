@@ -1,6 +1,5 @@
-(ns koans.core-test
-  (:require [koans.engine :refer :all]))
-
+(ns koans.01-equalities-test
+ (:require [koans.engine :refer :all]))
 
 (meditations
  "We shall contemplate truth by testing reality, via equality"
@@ -38,4 +37,3 @@
 
  "When things cannot be equal, they must be different"
  (not= :fill-in-the-blank __))
-
