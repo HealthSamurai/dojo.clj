@@ -21,7 +21,9 @@
 
 (defn report-from-file [ctx filename]
   (with-open [rdr (clojure.java.io/reader filename)]
-    (doseq [ev (map yaml/parse-string (line-seq rdr))]
+    (doseq [ev (->> (line-seq rdr)
+                    (map yaml/parse-string)
+                    (map #(update % :ev keyword)))]
       (dispatch ctx ev))))
 
 (comment
