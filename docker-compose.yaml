@@ -1,12 +1,14 @@
 version: '3.1'
 services:
   dojo-db:
-    image: aidbox/db:11.4.0
+    # image: aidbox/db:11.4.0
+    image: pipelinedb/pipelinedb-postgresql-11
     container_name: dojo-db
     ports:
       - "${PGPORT}:5432"
     volumes:
-      - "./pgdata:/data"
+      # - "./pgdata:/data"
+      - "./pgdata:/var/lib/postgresql/data"
     environment:
       POSTGRES_USER:     "${PGUSER}" 
       POSTGRES_PASSWORD: "${PGPASSWORD}" 

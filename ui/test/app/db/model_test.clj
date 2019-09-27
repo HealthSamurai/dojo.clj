@@ -1,6 +1,7 @@
 (ns app.db.model-test
   (:require [app.db.model :as sut]
             [re-frame.core :as rf]
+            [server]
             [matcho.core :as matcho]
             [clojure.test :refer :all]))
 
@@ -18,8 +19,7 @@
   (matcho/match
    @page
    {:tables {:columns not-empty?
-             :rows [{:id not-nil? :vals [{:id not-nil? :value not-nil?}]}]}}
-   )
+             :rows [{:id not-nil? :vals [{:id not-nil? :value not-nil?}]}]}})
 
 
   (rf/dispatch [:db/index :params {:params {:q "pg_proc"}}])
