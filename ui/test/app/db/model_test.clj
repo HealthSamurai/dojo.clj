@@ -21,5 +21,12 @@
    )
 
 
+  (rf/dispatch [:db/index :params {:params {:q "pg_proc"}}])
+  (matcho/match
+   @page
+   {:tables {:columns not-empty?
+             :rows [{:id not-nil? :vals [{:value "pg_catalog.pg_proc"}]}]}}
+   )
+
  )
 
