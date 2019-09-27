@@ -11,9 +11,8 @@
 
  ;; http://www.functionalbytes.nl/clojure/nodejs/figwheel/repl/clojurescript/cli/2017/12/20/tools-deps-figwheel.html
 
- :aliases {:dev {:extra-paths ["dev" "test"]
-                 :extra-deps {
-                              app                       {:local/root "../"}
+ :aliases {:dev {:extra-paths ["dev" "test" "../src"]
+                 :extra-deps {app                       {:local/root "../"}
                               nrepl {:mvn/version "0.5.3"}
                               cider/cider-nrepl {:mvn/version "0.20.0-SNAPSHOT"}
 

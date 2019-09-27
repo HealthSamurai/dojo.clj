@@ -44,7 +44,7 @@
   (try
     (when-let [srv (:web @ctx)] (srv))
     (catch Exception e))
-  (try 
+  (try
     (when-let [db (:db @ctx)] (db.core/shutdown db))
     (catch Exception e)))
 

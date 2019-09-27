@@ -1,4 +1,4 @@
-(ns headless-server
+(ns server
   (:require [dojo.core]
             [cheshire.core :as json]
             [re-frame.core :as rf]
@@ -22,7 +22,7 @@
 
 (defn dispatch [req]
   (ensure-server)
-  (let [{disp :dispatch} @*server]
+  (let [{disp :dispatch} @@*server]
     (disp req)))
 
 (defn json-fetch [{:keys [uri token headers is-fetching-path params success error] :as opts}]
@@ -62,5 +62,11 @@
 
 (comment
   (ensure-server)
+  (dojo.core/db-from-env)
+
+  @*server
+
+  (dispatch {:uri "/db/tables"})
+
 
   )
