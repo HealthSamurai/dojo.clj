@@ -1,11 +1,34 @@
 (ns dojo.core
   (:require [web.core]
-            [db.core])
+            [db.core]
+            [route-map.core :as route-map])
   (:gen-class))
 
-(defn handler [ctx]
-  (println "Here in context: " (:db ctx) " req: " (:request ctx))
-  {:status 200 :body "Hello"})
+(defn tables-ctl [{db :db}]
+  (let [tbls (db.core/query db "select * from information_schema.tables")]
+    {:status 200
+     :body tbls}))
+
+(def routes
+  {:GET (fn [_] {:status 200 :body "Hello"})
+   "db" {"tables" {:GET tables-ctl}}})
+
+(defn do-format [resp]
+  (if-let [b (:body resp)]
+    (-> 
+     resp
+     (assoc :body (cheshire.core/generate-string b))
+     (assoc-in [:headers "content-type"] "application/json"))
+    resp))
+
+(defn handler [{req :request :as ctx}]
+  (let [route   (route-map/match [(or (:request-method req) :get) (:uri req)] routes)]
+    (if-let [handler (:match route)]
+      (-> (handler ctx)
+          (do-format)
+          )
+      {:status 200
+       :body (str [(or (:request-method req) :get) (:uri req)] "not found" route)})))
 
 (defn start [cfg]
   (let [ctx (atom {:cfg cfg})

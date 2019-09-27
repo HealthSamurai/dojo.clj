@@ -1,9 +1,9 @@
-(ns app.welcome.model
+(ns app.rest.model
   (:require
    [re-frame.core :as rf]
    [app.routes :refer [href]]))
 
-(def page-key :welcome/index)
+(def page-key :rest/index)
 
 (rf/reg-event-fx
  page-key
@@ -11,10 +11,7 @@
    (cond
      (= :init phase)
      {:db (assoc db page-key
-                 {:title "Dashboard"
-                  :blocks [{:id "db" :title "DB"}
-                           {:id "rest" :title "REST"}
-                           {:id "k8s" :title "K8S"}]})}
+                 {:title "DB"})}
 
      (= :params phase)
      {:db db}

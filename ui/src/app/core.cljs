@@ -9,9 +9,11 @@
 
             [app.routes]
             [app.layout]
-            
+
             [app.pages]
             [app.welcome.core]
+            [app.db.core]
+            [app.rest.core]
             [garden.core :as garden]))
 
 
