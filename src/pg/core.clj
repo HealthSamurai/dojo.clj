@@ -16,10 +16,14 @@
          (format fmt))))
 
 (defn concat-ba [a b]
-  (let [buf (byte-array (+ (count a) (count b)))]
-    (System/arraycopy a 0 buf 0 (count a))
-    (System/arraycopy b 0 buf (count a) (count b))
-    buf))
+  (cond
+    (nil? b) a
+    (nil? a) b
+    :else
+    (let [buf (byte-array (+ (count a) (count b)))]
+      (System/arraycopy a 0 buf 0 (count a))
+      (System/arraycopy b 0 buf (count a) (count b))
+      buf)))
 
 (defn md5 [x]
   (let [d (MessageDigest/getInstance "MD5")]
