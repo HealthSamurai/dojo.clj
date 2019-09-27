@@ -1,5 +1,5 @@
-(ns dojo.watchers)
-
+(ns dojo.watchers
+  (:require [clj-yaml.core :as yaml]))
 
 (defn start [ctx]
   ctx)
@@ -19,3 +19,15 @@
                  (h ctx (merge (or (get w fx-name) {}) arg)))))))))))
 
 
+(defn report-from-file [ctx filename]
+  (with-open [rdr (clojure.java.io/reader filename)]
+    (doseq [ev (map yaml/parse-string (line-seq rdr))]
+      (dispatch ctx ev))))
+
+(comment
+
+  (def filename "/Users/vganshin/hs/logs/logs.ndjson")
+
+  (report-from-file ctx filename)
+
+  )
