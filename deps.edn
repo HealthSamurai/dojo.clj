@@ -35,41 +35,57 @@
          }
  :aliases
         {:nrepl
-                      {:extra-paths ["dev" "ui/build.dev" "test"]
-                       :extra-deps  {spieden/spyscope              {:mvn/version "0.1.7"} ;; newer version without bugs (fork)
-                                     org.clojure/clojure           {:mvn/version "1.10.0"}
-                                     org.clojure/tools.nrepl       {:mvn/version "0.2.13"}
-                                     cider/cider-nrepl             {:mvn/version "0.20.0"}
-                                     refactor-nrepl/refactor-nrepl {:mvn/version "2.4.0"}}
-                       :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]}
+                       {:extra-paths ["dev" "ui/build.dev" "test"]
+                        :extra-deps  {spieden/spyscope              {:mvn/version "0.1.7"} ;; newer version without bugs (fork)
+                                      org.clojure/clojure           {:mvn/version "1.10.0"}
+                                      org.clojure/tools.nrepl       {:mvn/version "0.2.13"}
+                                      cider/cider-nrepl             {:mvn/version "0.20.0"}
+                                      refactor-nrepl/refactor-nrepl {:mvn/version "2.4.0"}}
+                        :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]}
 
-         :test        {:extra-paths ["test"]}
+         :test         {:extra-paths ["test"]}
 
-         :runner      {:extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
-                                                               :sha     "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
-                       :jvm-opts   ^:replace ["-XX:-OmitStackTraceInFastThrow"]
-                       :main-opts  ["-m" "test-runner"]}
+         :runner       {:extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner"
+                                                                :sha     "3cb0a9daf1cb746259dc8309b218f9211ad3b33b"}}
+                        :jvm-opts   ^:replace ["-XX:-OmitStackTraceInFastThrow"]
+                        :main-opts  ["-m" "test-runner"]}
 
          :build
-                      {:extra-paths ["build" "ui/build.prod"]
-                       :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]
-                       :extra-deps  {cambada {:git/url "https://github.com/HealthSamurai/cambada"
-                                              :sha     "e44a0bebd039285f3e10f15f5703d6eaf92672c7"}}
-                       :main-opts   ["-m" "build"]}
+                       {:extra-paths ["build" "ui/build.prod"]
+                        :jvm-opts    ^:replace ["-XX:-OmitStackTraceInFastThrow"]
+                        :extra-deps  {cambada {:git/url "https://github.com/HealthSamurai/cambada"
+                                               :sha     "e44a0bebd039285f3e10f15f5703d6eaf92672c7"}}
+                        :main-opts   ["-m" "build"]}
 
-         :debug-tools {:extra-deps    {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
-                                       org.clojure/tools.trace     {:mvn/version "0.7.9"}
-                                       philoskim/debux             {:mvn/version "0.5.6"}
-                                       spieden/spyscope            {:mvn/version "0.1.7"}
-                                       com.bhauman/spell-spec      {:mvn/version "0.1.1"}
-                                       org.clojure/core.rrb-vector {:mvn/version "0.0.14"}}
-                       :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}
+         :debug-tools  {:extra-deps    {vvvvalvalval/scope-capture  {:mvn/version "0.3.2"}
+                                        org.clojure/tools.trace     {:mvn/version "0.7.9"}
+                                        philoskim/debux             {:mvn/version "0.5.6"}
+                                        spieden/spyscope            {:mvn/version "0.1.7"}
+                                        com.bhauman/spell-spec      {:mvn/version "0.1.1"}
+                                        org.clojure/core.rrb-vector {:mvn/version "0.0.14"}}
+                        :override-deps {org.clojure/clojurescript {:mvn/version "1.10.520"}}}
 
          ;; for IDEA users
-         :repl        {:extra-deps  {criterium                  {:mvn/version "0.4.5"}
-                                     cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
-                                     nrepl                      {:mvn/version "0.6.0"}
-                                     com.cognitect/transcriptor {:mvn/version "0.1.5"}
-                                     com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
-                       :extra-paths ["src" "dev" "ui/dev" "test" "build"]
-                       :main-opts   ["--main" "nrepl.cmdline" #_"--port" #_"7888"]}}}
+         :repl         {:extra-deps  {criterium                  {:mvn/version "0.4.5"}
+                                      cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                      nrepl                      {:mvn/version "0.6.0"}
+                                      com.cognitect/transcriptor {:mvn/version "0.1.5"}
+                                      com.bhauman/rebel-readline {:mvn/version "0.1.4"}}
+                        :extra-paths ["src" "dev" "ui/dev" "test" "build"]
+                        :main-opts   ["--main" "nrepl.cmdline" #_"--port" #_"7888"]}
+
+         :atomix-repl1 {:extra-deps  {cider/cider-nrepl {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                      nrepl             {:mvn/version "0.6.0"}}
+                        :extra-paths ["src" "dev"]
+                        :main-opts   ["--main" "nrepl.cmdline" "--port" "7000"]}
+
+         :atomix-repl2 {:extra-deps  {cider/cider-nrepl {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                      nrepl             {:mvn/version "0.6.0"}}
+                        :extra-paths ["src" "dev"]
+                        :main-opts   ["--main" "nrepl.cmdline" "--port" "7001"]}
+
+         :atomix-repl3 {:extra-deps  {cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                      nrepl                      {:mvn/version "0.6.0"}}
+                        :extra-paths ["src" "dev"]
+                        :main-opts   ["--main" "nrepl.cmdline" "--port" "7002"]}}
+ }
