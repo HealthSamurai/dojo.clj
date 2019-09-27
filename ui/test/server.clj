@@ -16,6 +16,7 @@
 
 (defonce *server (atom nil))
 
+
 (defn ensure-server []
   (when-not @*server
     (reset! *server (dojo.core/start {:db (dojo.core/db-from-env)}))))
@@ -25,7 +26,6 @@
     (dojo.core/stop srv)))
 
 (defn dispatch [req]
-  (ensure-server)
   (let [{disp :dispatch} @@*server]
     (disp req)))
 
@@ -75,6 +75,7 @@
   @*server
 
   (dispatch {:uri "/db/tables"})
+  (dispatch {:uri "/ups"})
 
 
   (def srv 

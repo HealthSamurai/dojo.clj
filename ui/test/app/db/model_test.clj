@@ -8,9 +8,10 @@
 (defn not-nil? [x] (not (nil? x)))
 
 (deftest db-test
-  (rf/dispatch [:db/index :init {}])
 
-  @server/app-db
+  (server/ensure-server)
+
+  (rf/dispatch [:db/index :init {}])
 
   (def page (rf/subscribe [:db/index]))
 
