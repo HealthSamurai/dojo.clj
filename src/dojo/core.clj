@@ -4,8 +4,29 @@
             [route-map.core :as route-map])
   (:gen-class))
 
-(defn tables-ctl [{db :db}]
-  (let [tbls (db.core/query db "select * from information_schema.tables")]
+(defn tables-ctl [{db :db {{q :q} :params} :request}]
+  (let [tbls (db.core/query db ["
+SELECT
+    table_schema || '.' ||  table_name as table_name
+    , pg_size_pretty(total_bytes) AS total
+    , pg_size_pretty(index_bytes) AS index
+    , pg_size_pretty(toast_bytes) AS toast
+    , pg_size_pretty(table_bytes) AS table
+  FROM (
+  SELECT *, total_bytes-index_bytes-COALESCE(toast_bytes,0) AS table_bytes FROM (
+      SELECT c.oid,nspname AS table_schema, relname AS TABLE_NAME
+              , c.reltuples AS row_estimate
+              , pg_total_relation_size(c.oid) AS total_bytes
+              , pg_indexes_size(c.oid) AS index_bytes
+              , pg_total_relation_size(reltoastrelid) AS toast_bytes
+          FROM pg_class c
+          LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+          WHERE relkind = 'r' AND relname ilike ?
+  ) a
+) a
+ORDER BY total_bytes desc
+LIMIT 30;
+" (str "%" q "%")])]
     {:status 200
      :body tbls}))
 
@@ -13,20 +34,11 @@
   {:GET (fn [_] {:status 200 :body "Hello"})
    "db" {"tables" {:GET tables-ctl}}})
 
-(defn do-format [resp]
-  (if-let [b (:body resp)]
-    (-> 
-     resp
-     (assoc :body (cheshire.core/generate-string b))
-     (assoc-in [:headers "content-type"] "application/json"))
-    resp))
 
 (defn handler [{req :request :as ctx}]
   (let [route   (route-map/match [(or (:request-method req) :get) (:uri req)] routes)]
     (if-let [handler (:match route)]
-      (-> (handler ctx)
-          (do-format)
-          )
+      (handler ctx)
       {:status 200
        :body (str [(or (:request-method req) :get) (:uri req)] "not found" route)})))
 

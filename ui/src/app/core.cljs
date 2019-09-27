@@ -6,6 +6,7 @@
             [zframes.routing]
             [zframes.redirect]
             [zframes.xhr]
+            [zframes.debounce]
 
             [app.routes]
             [app.layout]

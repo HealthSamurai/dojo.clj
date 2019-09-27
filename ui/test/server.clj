@@ -20,6 +20,10 @@
   (when-not @*server
     (reset! *server (dojo.core/start {:db (dojo.core/db-from-env)}))))
 
+(defn stop []
+  (when-let [srv @*server]
+    (dojo.core/stop srv)))
+
 (defn dispatch [req]
   (ensure-server)
   (let [{disp :dispatch} @@*server]
@@ -62,11 +66,22 @@
 
 (comment
   (ensure-server)
+  (stop)
+
   (dojo.core/db-from-env)
+
+  (reset! *server nil)
 
   @*server
 
   (dispatch {:uri "/db/tables"})
+
+
+  (def srv 
+    (dojo.core/start {:db (dojo.core/db-from-env)
+                      :web {}}))
+
+  (dojo.core/stop srv)
 
 
   )

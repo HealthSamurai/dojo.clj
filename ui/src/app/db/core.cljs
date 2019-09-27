@@ -10,7 +10,15 @@
 (def styles
   (styles/styles
    [:div#db
+    [:.search {:width "100%"}]
     ]))
+
+(defn search []
+  (let [sub (rf/subscribe [:db/filter])
+        on-search #(rf/dispatch [:db/filter-table (.. % -target -value)])]
+    (fn []
+      (let [m @sub]
+        [:input.search {:placeholder "Search" :on-change on-search :value m}]))))
 
 (defn index [params]
   (let [m (rf/subscribe [model/page-key])]
@@ -18,16 +26,23 @@
       (let [*m @m]
         [:div#db.centered-content
          styles
-         [:h1 "DB:"]
-         [:input {:placeholder "search..."}]
-         [:table.table
-          (let [rows (:tables *m)
-                cols (keys (first rows))]
-            [:tbody 
-             (for [r rows]
-               (into
-                [:tr {:key (:table_name r)}]
-                (for [c cols]
-                  [:td {:key c} (pr-str (get r c))])))])]]))))
+         [search]
+         ;; [:input.search {:placeholder "Search" :on-change on-search :value (:search *m)}]
+         (if (= (:status *m) :progress)
+           [:center
+            [:div.loader "Loading..."]]
+           (let [table (:tables *m)]
+             [:table.table
+              [:thead
+               (into [:tr]
+                     (for [c (:columns table)]
+                       [:th {:id (:id c)} (:title c)]))]
+              [:tbody 
+               (for [{id :id vals :vals} (:rows table)]
+                 (into
+                  [:tr {:key id}]
+                  (for [v vals]
+                    [:td {:key (:id v)}
+                     (:value v)])))]]))]))))
 
 (pages/reg-page model/page-key index)

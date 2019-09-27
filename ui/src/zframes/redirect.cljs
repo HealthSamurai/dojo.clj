@@ -52,7 +52,7 @@
                   :params (apply dissoc (merge old-params params)
                                  nil-keys)}})))
 (rf/reg-event-fx
- ::set-params
+ :redirect/set-params
  (fn [{db :db} [_ params]]
    (let [pth (get db :fragment-path)]
      {::redirect {:uri pth
