@@ -1,5 +1,6 @@
 (ns user
   (:require [clojure.java.shell :as shell]
+            [dojo.core]
             [cider-nrepl.main]
             [figwheel.main.api]
             [build]
@@ -34,10 +35,22 @@
 (defn cljs-repl []
   (figwheel.main.api/cljs-repl "app"))
 
+(defn server []
+  (dojo.core/start {:db (dojo.core/db-from-env)
+                    :web {}}))
+
 
 (comment
   (figwheel)
   (repl/stop-figwheel!)
 
   (cljs-repl)
+
+  (def srv (server))
+
+  ;; run figwheel
+  ;; run server
+  ;; for ui open http://localhost:8887/static/index.html
+
+  (dojo.core/stop srv)
   )
