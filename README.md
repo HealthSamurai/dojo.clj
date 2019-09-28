@@ -17,6 +17,12 @@
 make up
 make repl
 # connect from ide
+
+# for ui
+cd ui
+make repl
+
+# after that your UI is available by http://localhost:8887/static/index.html
 ```
 
 ## Deploy
