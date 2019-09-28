@@ -3,7 +3,7 @@ Dev mode
 
 ```
 
-./runme repl
+make repl
 
 emacs src/user.clj
 
