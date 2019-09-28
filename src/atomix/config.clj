@@ -3,7 +3,8 @@
            (io.atomix.storage StorageLevel)
            (io.atomix.core AtomixBuilder Atomix)
            (io.atomix.cluster.discovery BootstrapDiscoveryProvider BootstrapDiscoveryBuilder)
-           (io.atomix.cluster Node)))
+           (io.atomix.cluster Node MemberId)
+           (java.util.concurrent CompletableFuture)))
 
 (defonce *node-conf1 (atom nil))
 
@@ -69,9 +70,18 @@
   (def node2 (create-node @*node-conf2))
   (def node3 (create-node @*node-conf3))
 
-  (future (.join (.start node1)))
-  (future (.join (.start node2)))
-  (future (.join (.start node3)))
+  (future (.join @(.start node1)))
+  (future (.join @(.start node2)))
+  (future (.join @(.start node3)))
+
+  (.subscribe  (.getCommunicationService node2) "subj" (reify java.util.function.Function
+                                                         (apply [this msg]
+                                                           (CompletableFuture/completedFuture msg))))
+  (.thenAccept
+    (.send (.getCommunicationService node1) "subj" "hello frome node-1" (MemberId/from "node-1"))
+    )
+
+
   )
 
 
