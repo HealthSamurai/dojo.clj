@@ -5,6 +5,7 @@
    [ring.util.codec]
    [ring.middleware.cookies :as cookies]
    [clojure.java.io :as io]
+   [cheshire.core]
    [ring.util.response]
    [ring.util.request]
    [ring.middleware.head]
@@ -39,6 +40,16 @@
   (fn [req]
     (handle-static h req)))
 
+(defn format-mw [h]
+  (fn [req]
+    (let [resp (h (prepare-request req))]
+      (if-let [b (:body resp)]
+        (->
+         resp
+         (assoc :body (cheshire.core/generate-string b))
+         (assoc-in [:headers "content-type"] "application/json"))
+        resp))))
+
 (defn start
   "start server with dynamic metadata"
   [config dispatch]
@@ -47,6 +58,7 @@
                            :thread 8
                            :max-body 20971520} config)
         handler (-> dispatch
+                    format-mw
                     (wrap-static)
                     (wrap-content-type {:mime-types {nil "text/html"}})
                     wrap-not-modified)]

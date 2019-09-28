@@ -3,7 +3,10 @@
             [re-frame.core :as rf]
             [route-map.core :as route-map]))
 
-(def routes {:. :welcome/index})
+(def routes {:. :welcome/index
+             "rest" {:. :rest/index}
+             "db"   {:. :db/index}
+             "events" {:. :events/index}})
 
 
 (defn to-query-params [params]

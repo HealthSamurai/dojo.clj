@@ -1,7 +1,11 @@
+.EXPORT_ALL_VARIABLES:
 SHELL = bash
+.PHONY: test build
+
+include ../.env
 
 repl:
-	source ../.env && clj -A:dev -R:dev -e "(repl)" -r
+	clj -A:dev -R:dev -e "(repl)" -r
 
 clean:
 	rm -rf target/ .cpcache/

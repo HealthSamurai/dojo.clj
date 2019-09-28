@@ -120,7 +120,7 @@
          {:db (assoc db :route/history (conj (take 4 (:route/history db)) {:route (:match route) :uri fragment})
                      ;; :fragment fragment
                      ;; :fragment-params params
-                     ;; :fragment-path path
+                     :fragment-path path
                      ;; :fragment-query-string qs
                      ;; :route/context contexts
                      :route-map/current-route route)

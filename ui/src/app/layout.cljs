@@ -3,12 +3,14 @@
             [app.styles]
             [app.routes :refer [href]]))
 
-
 (rf/reg-sub
  ::navigation
  (fn [db _]
    {:title "INC"
-    :menu [{:href (href "") :display "Home"}]}))
+    :menu [{:href (href "") :display "Home"}
+           {:href (href "rest") :display "REST"}
+           {:href (href "db") :display "DB"}
+           {:href (href "events") :display "Events"}]}))
 
 (def style (app.styles/styles
             [:nav
@@ -18,15 +20,18 @@
              [:.nav-item {:display "inline-block"
                           :padding "5px"}]]))
 
+(defn menu [m]
+  [:nav
+   (for [i m]
+     [:a.nav-item
+      {:key (:href i)
+       :href (:href i)}
+      (:display i)])])
+
 (defn layout []
   (let [model (rf/subscribe [::navigation])]
     (fn [cnt]
-      [:div.container 
+      [:div.container-fluid 
        style
-       [:nav
-        (for [i (:menu @model)]
-          [:a.nav-item
-           {:key (:href i)
-            :href (:href i)}
-           (:display i)])]
+       [menu (:menu @model)]
        cnt])))

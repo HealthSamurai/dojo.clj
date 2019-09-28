@@ -114,7 +114,6 @@
     (*json-fetch opts)))
 
 (rf/reg-fx :json/fetch json-fetch)
-(rf/reg-fx ::json-fetch json-fetch)
 
 (rf/reg-event-db
  ::fetch-start

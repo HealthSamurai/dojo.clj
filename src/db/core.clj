@@ -76,7 +76,7 @@
           start (System/currentTimeMillis)]
       (try
         (let [res (jdbc/query db sql)]
-          (println :query sql)
+          ;; (println :query sql)
           res)
         (catch Exception e
           (println :query sql)
@@ -246,9 +246,6 @@
 (defn drop-database [db {dbname :database :as spec}]
   (println :db/drop-db {:db (:database spec)})
   (exec! db (format "DROP DATABASE IF EXISTS %s" dbname)))
-
-(defn database-exists? [db dbname]
-  (database-exists? db dbname))
 
 
 (def raw honeysql.core/raw)

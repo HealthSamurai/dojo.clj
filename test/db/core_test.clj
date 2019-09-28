@@ -5,6 +5,8 @@
 
 (deftest db.core-test
   (def db-spec (sut/db-spec-from-env))
+  db-spec
+
   (defonce db (sut/connection db-spec))
 
   (matcho/match

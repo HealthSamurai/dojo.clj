@@ -17,10 +17,13 @@
                 (.setTimeZone tf (java.util.TimeZone/getTimeZone "UTC"))
                 tf))
 
-(defn- to-date [sql-time]
+(defn- to-datetime [sql-time]
   (str (.format time-fmt sql-time) "."
        (format "%06d"  (/ (.getNanos sql-time) 1000))
        "Z"))
+
+(defn- to-date [sql-time]
+  (str (.format time-fmt sql-time)))
 
 (defn- to-sql-date [clj-time]
   (tc/to-sql-time clj-time))
@@ -30,7 +33,7 @@
   (result-set-read-column [v _ _] (to-date v))
 
   java.sql.Timestamp
-  (result-set-read-column [v _ _] (to-date v)))
+  (result-set-read-column [v _ _] (to-datetime v)))
 
 (extend-type java.util.Date
   jdbc/ISQLParameter
