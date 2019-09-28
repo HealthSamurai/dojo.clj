@@ -9,8 +9,6 @@
 (deftest rest-watcher
   (def db (tsys/ensure-db))
 
-
-
   (dbc/exec! db "
 create extension if not exists pipelinedb;
 DROP VIEW IF EXISTS rest_stats;
@@ -54,40 +52,26 @@ GROUP BY
 
 ")
 
-  (dbc/with-connection db (fn [conn]
-                            (println conn)
-                            ))
-
   (time
    (doseq [i (range 1000)]
-     (doseq [d ["2019-09-25T16:40:54+00:00"
-                ;;"2019-09-26T16:40:54+00:00"
-                ;;"2019-09-27T16:40:54+00:00"
-                ]]
-       (dbc/insert
-        db {:table :rest_requests}
-        {:ts d
-         :meth "post"
-         :uri "/Encounter"
-         :d i})
-       #_(dbc/insert
-        db {:table :rest_requests}
-        {:ts d
-         :meth "get"
-         :uri "/Patient"
-         :d i}))))
+     (dbc/insert
+      db {:table :rest_requests}
+      {:ts "2019-09-25T16:40:54+00:00"
+       :meth "post"
+       :uri "/Encounter"
+       :d i})))
 
-  (dbc/query db "select * from rest_stats")
-
-  (time (dbc/query db "select * from rest_daily_cnt"))
 
 
   (let [add-item (dbc/mk-copy db 1000 :rest_requests [:ts :meth :uri :qs :d])]
     (time
-     (doseq [i (range 10000)]
+     (doseq [i (range 1001)]
        (add-item {:ts "2019-09-25T16:40:54+00:00" :meth "post" :uri "/Encounter" :d i}))))
-  
 
+
+  (dbc/query db "select * from rest_stats")
+
+  (time (dbc/query db "select * from rest_daily_cnt"))
 
   )
 

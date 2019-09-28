@@ -4,7 +4,9 @@
             [route-map.core :as route-map])
   (:gen-class))
 
-(defn tables-ctl [{db :db {{q :q} :params} :request}]
+(defn tables-ctl
+  [{db :db {{q :q} :params} :request}]
+
   (let [tbls (db.core/query db ["
 SELECT
     table_schema || '.' ||  table_name as table_name
@@ -30,16 +32,22 @@ LIMIT 30;
     {:status 200
      :body tbls}))
 
+(defn dbs-ctl
+  [{db :db {{q :q} :params} :request}]
+  {:status 200
+   :body (db.core/query db "select * from pg_database order by datname")})
+
 (def routes
   {:GET (fn [_] {:status 200 :body "Hello"})
-   "db" {"tables" {:GET tables-ctl}}})
+   "db" {"tables" {:GET tables-ctl}
+         "dbs" {:GET dbs-ctl}}})
 
 
 (defn handler [{req :request :as ctx}]
   (let [route   (route-map/match [(or (:request-method req) :get) (:uri req)] routes)]
     (if-let [handler (:match route)]
       (handler ctx)
-      {:status 200
+      {:status 404
        :body (str [(or (:request-method req) :get) (:uri req)] "not found" route)})))
 
 (defn start [cfg]
@@ -74,9 +82,14 @@ LIMIT 30;
   (def ctx (start {:db (db.core/db-spec-from-env)
                    :web {}}))
 
+  (:db @ctx)
+
   (dispatch ctx {:uri "/"})
+  (dispatch ctx {:uri "/db/tables" :params {:q "class"}})
 
   (stop ctx)
+
+  
 
 
   )

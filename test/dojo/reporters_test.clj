@@ -22,7 +22,6 @@ pg_size_pretty( pg_database_size(current_database())) as display
    :query "SELECT sum(numbackends) as num_conn FROM pg_stat_database"})
 
 
-
 (deftest reporters-test
   (def reps
     {:config {:db (db.core/db-spec-from-env)}

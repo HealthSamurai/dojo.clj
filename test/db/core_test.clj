@@ -1,13 +1,29 @@
 (ns db.core-test
   (:require [db.core :as sut]
+            [clj-yaml.core]
             [matcho.core :as matcho]
             [clojure.test :refer :all]))
 
+(defn dump [x]
+  (spit "/tmp/res.yaml"
+        (clj-yaml.core/generate-string
+         x)))
+
 (deftest db.core-test
+  (sut/db-spec-from-env)
+
   (def db-spec (sut/db-spec-from-env))
   db-spec
 
+  (type 1)
+  (type "ups")
+  (type db)
+  db
+
+  (type (:connection db))
+
   (defonce db (sut/connection db-spec))
+
 
   (matcho/match
    (sut/query db "select 1 a")
@@ -34,13 +50,16 @@ create table tests (
 
 ")
 
+  (sut/insert db {:table :tests} {:id 2 :resource {:name "John"}})
   (sut/insert db {:table :tests} {:id 1 :resource {:name "John"}})
 
-  (sut/update db {:table :tests} {:id 1 :resource {:name "Ivan"}})
+  (sut/do-update db {:table :tests} {:id 1 :resource {:name "Ivan"}})
 
   (matcho/match
-   (sut/query db {:select [:*] :from [:tests]})
-   [{:id 1 :resource {:name "Ivan"}}])
+   (sut/query db (merge {:select [:*]}
+                        {:from [:tests]
+                         :order-by [:id]}))
+   [{:id 1} {:id 2}])
 
   )
 

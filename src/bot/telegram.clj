@@ -6,11 +6,9 @@
 
 (def mock-path (System/getenv "TELEGRAM_MOCK_PATH"))
 
-(def token  (or (System/getenv "TELEGRAM_TOKEN")
-                #_(k8s/secret :pg3 :TELEGRAM_TOKEN)))
+(def token  (or (System/getenv "TELEGRAM_TOKEN")))
 
-(def chatid (or (System/getenv "TELEGRAM_CHATID")
-                #_(k8s/secret :pg3 :TELEGRAM_CHATID)))
+(def chatid (or (System/getenv "TELEGRAM_CHATID")))
 
 (defn notify [msg]
   (t/send-text token chatid {:parse_mode "Markdown"} msg))

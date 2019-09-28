@@ -22,12 +22,11 @@
       (System/getenv)))
 
 (defn db-spec-from-env []
-  (merge
-   {:host (env :pghost)
-    :port (env :pgport)
-    :user (env :pguser)
-    :database (env :pgdatabase)
-    :password (env :pgpassword)}))
+  {:host (env :pghost)
+   :port (env :pgport)
+   :user (env :pguser)
+   :database (env :pgdatabase)
+   :password (env :pgpassword)})
 
 
 (defn database-url [spec]

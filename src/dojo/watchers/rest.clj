@@ -1,13 +1,9 @@
-(ns dojo.watchers.rest
-
-  )
+(ns dojo.watchers.rest)
 
 
-(defn start [ctx]
-
+(defn add [x y]
+  (+ x y))
 
 
 
-
-
-  )
+(defn start [ctx])
