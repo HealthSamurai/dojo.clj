@@ -32,6 +32,9 @@
          io.atomix/atomix            {:mvn/version "3.0.6"}
          io.atomix/atomix-raft       {:mvn/version "3.0.6"}
 
+         ;; CompletableFuture support
+         funcool/promissum           {:mvn/version "0.3.3"}
+
          }
  :aliases
         {:nrepl
@@ -84,8 +87,8 @@
                         :extra-paths ["src" "dev"]
                         :main-opts   ["--main" "nrepl.cmdline" "--port" "7001"]}
 
-         :atomix-repl3 {:extra-deps  {cider/cider-nrepl          {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
-                                      nrepl                      {:mvn/version "0.6.0"}}
+         :atomix-repl3 {:extra-deps  {cider/cider-nrepl {:mvn/version "0.20.0"} ;; not need, but for compatibility with dojo codebase
+                                      nrepl             {:mvn/version "0.6.0"}}
                         :extra-paths ["src" "dev"]
                         :main-opts   ["--main" "nrepl.cmdline" "--port" "7002"]}}
  }
